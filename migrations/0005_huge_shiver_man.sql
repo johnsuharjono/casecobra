@@ -1,0 +1,1 @@
+ALTER TABLE "configurations" RENAME COLUMN "phone_model" TO "model";
