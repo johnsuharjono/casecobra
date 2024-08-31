@@ -83,8 +83,8 @@ export const orders = pgTable("orders", {
   amount: numeric("amount").notNull(),
   isPaid: boolean("is_paid").notNull().default(false),
   status: orderStatusEnum("status").notNull().default("awaiting_shipment"),
-  shippingAddressId: text("shipping_address_id").notNull(),
-  billingAddressId: text("billing_address_id").notNull(),
+  shippingAddressId: text("shipping_address_id"),
+  billingAddressId: text("billing_address_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()
