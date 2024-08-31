@@ -1,19 +1,19 @@
-import { db } from "@/db"
-import { billingAddresses, orders, shippingAddresses } from "@/db/schema"
-import { stripe } from "@/lib/stripe"
-import { eq } from "drizzle-orm"
-import { headers } from "next/headers"
-import { NextResponse } from "next/server"
-import Stripe from "stripe"
+import { dbPool as db } from '@/db'
+import { billingAddresses, orders, shippingAddresses } from '@/db/schema'
+import { stripe } from '@/lib/stripe'
+import { eq } from 'drizzle-orm'
+import { headers } from 'next/headers'
+import { NextResponse } from 'next/server'
+import Stripe from 'stripe'
 
 export async function POST(req: Request) {
   try {
     const body = await req.text()
-    const signature = headers().get("stripe-signature")
+    const signature = headers().get('stripe-signature')
 
     if (!signature) {
       // 400 -> bad request
-      return new Response("Invalid", { status: 400 })
+      return new Response('Invalid', { status: 400 })
     }
 
     const event = stripe.webhooks.constructEvent(
@@ -22,9 +22,9 @@ export async function POST(req: Request) {
       process.env.STRIPE_WEBHOOK_SECRET!,
     )
 
-    if (event.type === "checkout.session.completed") {
+    if (event.type === 'checkout.session.completed') {
       if (!event.data.object.customer_details?.email) {
-        throw new Error("Missing user email")
+        throw new Error('Missing user email')
       }
 
       const session = event.data.object as Stripe.Checkout.Session
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
       }
 
       if (!userId || !orderId) {
-        throw new Error("Invalid request metadata")
+        throw new Error('Invalid request metadata')
       }
 
       const billingAddress = session.customer_details!.address
@@ -81,7 +81,7 @@ export async function POST(req: Request) {
     console.error(e)
 
     return NextResponse.json(
-      { message: "Something went wrong", ok: false },
+      { message: 'Something went wrong', ok: false },
       { status: 500 },
     )
   }

@@ -1,11 +1,11 @@
-"use server"
+'use server'
 
-import { BASE_PRICE, PRODUCT_PRICES } from "@/config/products"
-import { db } from "@/db"
-import { configurations, orders, SelectOrder } from "@/db/schema"
-import { stripe } from "@/lib/stripe"
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server"
-import { eq } from "drizzle-orm"
+import { BASE_PRICE, PRODUCT_PRICES } from '@/config/products'
+import { db } from '@/db'
+import { configurations, orders, SelectOrder } from '@/db/schema'
+import { stripe } from '@/lib/stripe'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import { eq } from 'drizzle-orm'
 
 export async function createCheckoutSession({
   configId,
@@ -18,14 +18,14 @@ export async function createCheckoutSession({
     .where(eq(configurations.id, configId))
 
   if (!configuration) {
-    throw new Error("Configuration not found")
+    throw new Error('Configuration not found')
   }
 
   const { getUser } = await getKindeServerSession()
   const user = await getUser()
 
   if (!user) {
-    throw new Error("You need to be logged in!")
+    throw new Error('You need to be logged in!')
   }
 
   const { finish, material } = configuration[0]
@@ -58,21 +58,21 @@ export async function createCheckoutSession({
   }
 
   const product = await stripe.products.create({
-    name: "Custom iPhone Case",
+    name: 'Custom iPhone Case',
     images: [configuration[0].imageUrl],
     default_price_data: {
-      currency: "SGD",
+      currency: 'SGD',
       unit_amount: price,
     },
   })
 
   const stripeSession = await stripe.checkout.sessions.create({
-    payment_method_types: ["card", "paynow"],
-    mode: "payment",
+    payment_method_types: ['card', 'paynow'],
+    mode: 'payment',
     success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
     cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/configure/preview?id=${configId}`,
     shipping_address_collection: {
-      allowed_countries: ["SG"],
+      allowed_countries: ['SG'],
     },
     metadata: {
       userId: user.id,
