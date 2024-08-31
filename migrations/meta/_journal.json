@@ -5,43 +5,22 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1722420429025,
-      "tag": "0000_faithful_wild_child",
+      "when": 1724168415836,
+      "tag": "0000_init_db",
       "breakpoints": true
     },
     {
       "idx": 1,
       "version": "7",
-      "when": 1722420534496,
-      "tag": "0001_real_zemo",
+      "when": 1724168872704,
+      "tag": "0001_bumpy_doctor_spectrum",
       "breakpoints": true
     },
     {
       "idx": 2,
       "version": "7",
-      "when": 1722420623292,
-      "tag": "0002_wooden_the_captain",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1722435918296,
-      "tag": "0003_gifted_rhino",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1723893313996,
-      "tag": "0004_workable_silver_samurai",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1723893385196,
-      "tag": "0005_huge_shiver_man",
+      "when": 1724171584303,
+      "tag": "0002_first_tattoo",
       "breakpoints": true
     }
   ]
