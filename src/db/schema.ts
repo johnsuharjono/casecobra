@@ -78,13 +78,23 @@ export const orders = pgTable('orders', {
     .primaryKey()
     .$defaultFn(() => createId())
     .notNull(),
-  configurationId: text('configuration_id').notNull(),
-  userId: text('user_id').notNull(),
+  configurationId: text('configuration_id')
+    .notNull()
+    .references(() => configurations.id, { onDelete: 'cascade' }),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
   amount: numeric('amount').notNull(),
   isPaid: boolean('is_paid').notNull().default(false),
   status: orderStatusEnum('status').notNull().default('awaiting_shipment'),
-  shippingAddressId: text('shipping_address_id'),
-  billingAddressId: text('billing_address_id'),
+  shippingAddressId: text('shipping_address_id').references(
+    () => shippingAddresses.id,
+    { onDelete: 'set null' },
+  ),
+  billingAddressId: text('billing_address_id').references(
+    () => billingAddresses.id,
+    { onDelete: 'set null' },
+  ),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at')
     .notNull()
