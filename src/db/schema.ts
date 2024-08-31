@@ -106,7 +106,7 @@ export const orderRelations = relations(orders, ({ one }) => ({
     fields: [orders.userId],
     references: [users.id],
   }),
-  configurationId: one(configurations, {
+  configuration: one(configurations, {
     fields: [orders.configurationId],
     references: [configurations.id],
   }),
@@ -114,7 +114,7 @@ export const orderRelations = relations(orders, ({ one }) => ({
     fields: [orders.shippingAddressId],
     references: [shippingAddresses.id],
   }),
-  billingAddreses: one(billingAddresses, {
+  billingAddress: one(billingAddresses, {
     fields: [orders.billingAddressId],
     references: [billingAddresses.id],
   }),

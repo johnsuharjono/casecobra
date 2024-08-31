@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils"
-import { HTMLAttributes } from "react"
+import { cn } from '@/lib/utils'
+import { HTMLAttributes } from 'react'
 
 interface PhoneProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
@@ -16,25 +16,25 @@ export function Phone({
   return (
     <div
       className={cn(
-        "relative pointer-events-none z-50 overflow-hidden",
-        className
+        'pointer-events-none relative z-50 overflow-hidden',
+        className,
       )}
       {...props}
     >
       <img
         src={
           dark
-            ? "/phone-template-dark-edges.png"
-            : "/phone-template-white-edges.png"
+            ? '/phone-template-dark-edges.png'
+            : '/phone-template-white-edges.png'
         }
-        className="pointer-events-none z-50 select-none"
-        alt="phone-image"
+        className='pointer-events-none z-50 select-none'
+        alt='phone-image'
       />
-      <div className="absolute -z-10 inset-0">
+      <div className='absolute inset-0 -z-10'>
         <img
           src={imgSrc}
-          className="object-cover min-w-full min-h-full"
-          alt="overlaying phone image"
+          className='min-h-full min-w-full object-cover'
+          alt='overlaying phone image'
         />
       </div>
     </div>
