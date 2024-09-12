@@ -10,6 +10,8 @@ import { formatPrice } from '@/lib/utils'
 export function ThankYou() {
   const searchParams = useSearchParams()
   const orderId = searchParams.get('orderId') || ''
+
+  // retry until error is not thrown from the action
   const { data } = useQuery({
     queryKey: ['get-payment-status'],
     queryFn: async () => await getPaymentStatus({ orderId }),

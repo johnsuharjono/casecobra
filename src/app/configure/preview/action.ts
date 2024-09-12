@@ -5,7 +5,7 @@ import { db } from '@/db'
 import { configurations, orders, SelectOrder } from '@/db/schema'
 import { stripe } from '@/lib/stripe'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { eq } from 'drizzle-orm'
+import { and, eq } from 'drizzle-orm'
 
 export async function createCheckoutSession({
   configId,
@@ -40,7 +40,9 @@ export async function createCheckoutSession({
   const [existingOrder] = await db
     .select()
     .from(orders)
-    .where(eq(orders.userId, user.id))
+    .where(
+      and(eq(orders.userId, user.id), eq(orders.configurationId, configId)),
+    )
 
   if (existingOrder) {
     order = existingOrder

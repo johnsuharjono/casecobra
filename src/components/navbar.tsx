@@ -11,7 +11,7 @@ export async function Navbar() {
   const isAdmin = user?.email === process.env.ADMIN_EMAIL
 
   return (
-    <nav className='sticky inset-x-0 top-0 z-[45] h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>
+    <nav className='sticky inset-x-0 top-0 z-[51] h-14 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'>
       <MaxWidthWrapper>
         <div className='flex h-14 items-center justify-between border-b border-zinc-200'>
           <Link href='/' className='z-40 flex font-semibold'>
@@ -29,7 +29,7 @@ export async function Navbar() {
                 </Link>
                 {isAdmin ? (
                   <Link
-                    href=''
+                    href='/dashboard'
                     className={buttonVariants({ size: 'sm', variant: 'ghost' })}
                   >
                     Dashboard ✨

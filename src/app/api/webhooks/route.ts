@@ -5,6 +5,10 @@ import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import { Resend } from 'resend'
+import OrderReceivedEmail from '@/components/emails/order-received-email'
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: Request) {
   try {
@@ -50,7 +54,7 @@ export async function POST(req: Request) {
           postalCode: shippingAddress?.postal_code!,
           state: shippingAddress?.state!,
         })
-        .returning({ shippingId: shippingAddresses.id })
+        .returning()
 
       const [billingAddressEntry] = await db
         .insert(billingAddresses)
@@ -64,14 +68,26 @@ export async function POST(req: Request) {
         })
         .returning({ billingId: billingAddresses.id })
 
-      await db
+      const [updatedOrder] = await db
         .update(orders)
         .set({
           isPaid: true,
           billingAddressId: billingAddressEntry.billingId,
-          shippingAddressId: shippingAddressEntry.shippingId,
+          shippingAddressId: shippingAddressEntry.id,
         })
         .where(eq(orders.id, orderId))
+        .returning({ updatedAt: orders.updatedAt })
+
+      await resend.emails.send({
+        from: 'CaseCobra <john.suharjono10@gmail.com>',
+        to: [event.data.object.customer_details.email],
+        subject: 'Thanks for your order',
+        react: OrderReceivedEmail({
+          orderId,
+          orderDate: updatedOrder.updatedAt.toLocaleDateString(),
+          shippingAddress: shippingAddressEntry,
+        }),
+      })
     }
 
     return NextResponse.json({ result: event, ok: true })

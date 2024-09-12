@@ -173,3 +173,5 @@ export const billingAddressRelations = relations(
 export type InsertConfiguration = typeof configurations.$inferInsert
 export type SelectConfiguration = typeof configurations.$inferSelect
 export type SelectOrder = typeof orders.$inferSelect
+
+export type SelectShippingAddress = typeof shippingAddresses.$inferInsert
